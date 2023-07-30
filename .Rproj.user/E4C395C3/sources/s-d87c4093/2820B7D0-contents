@@ -1,0 +1,43 @@
+---
+title: "Demographic Data Visualizaton Report"
+output: word_document
+editor_options: 
+chunk_output_type: console
+---
+**Report rendered on `r format(x = Sys.time(),format = "%A, %B %d, %Y %H:%M:%S IST",tz = "Asia/Kolkata")`**
+
+```{r child = 'demographic_insights.Rmd'}
+```
+
+## Patient Distribution
+
+### Plot 1 - SEX
+![](./graphs/patient_distribution_SEX.png)
+
+### Plot 2 - RACE
+![](./graphs/patient_distribution_RACE.png)
+
+### Plot 3 - ETHNIC
+![](./graphs/patient_distribution_ETHNIC.png)
+
+## Age Distribution
+
+### Plot 1 - SEX
+![](./graphs/age_distribution_SEX.png)
+
+### Plot 2 - RACE
+![](./graphs/age_distribution_RACE.png)
+
+### Plot 3 - ETHNIC
+![](./graphs/age_distribution_ETHNIC.png)
+
+## Age Group Ratio
+
+### Plot 1 - SEX
+![](./graphs/age_group_ratio_SEX.png)
+
+### Plot 2 - SEX
+![](./graphs/age_group_ratio_RACE.png)
+
+### Plot 3 - SEX
+![](./graphs/age_group_ratio_ETHNIC.png)

@@ -1,0 +1,27 @@
+{
+    "id": "2DD14802",
+    "path": "~/poc_app/Patient_Data_Analyser/data_preview_module.R",
+    "project_path": "data_preview_module.R",
+    "type": "r_source",
+    "hash": "4251732950",
+    "contents": "",
+    "dirty": false,
+    "created": 1690379019613.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "17,42",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1690381399,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1690381399845,
+    "read_only": false,
+    "read_only_alternatives": []
+}

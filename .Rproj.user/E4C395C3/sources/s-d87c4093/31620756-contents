@@ -1,0 +1,128 @@
+summarise_ops_UI <- function(id,field_names = NULL,counter_ui){
+  ns <- NS(id)
+  insertUI(
+    selector = "#Data_Manupulation-DM_steps",
+    where = "beforeEnd",
+    immediate = TRUE,
+    ui =
+      tagList(tags$div(id = ns("DM_ops_main_div"),
+                       fluidRow(class = paste0("DM_ops_blank_row"), 
+                                tags$div(class = "DM_ops_div",paste0("Step ",counter_ui," : Summarise")),
+                                fluidRow(column(width = 9),
+                                         column(width = 3,tags$div(class = "close_btn_DM_div",
+                                                                   actionButton(inputId =  ns("remove_step"),
+                                                                                label = NULL,icon = icon("times"))))),
+                       fluidRow(column(12,
+                                       selectInput(inputId = ns("summary_col_name"),
+                                                   label = "Select Column",
+                                                   choices = field_names,
+                                                   selected = NULL,
+                                                   multiple = TRUE,
+                                                   width = "100%"))),
+                       fluidRow(column(12,
+                                       selectInput(inputId = ns("summary_measure_name"),
+                                                   label = "Select measure",
+                                                   choices = ops_summarise_list,
+                                                   selected = NULL,
+                                                   multiple = TRUE,
+                                                   width = "100%"))),
+                       fluidRow(column(12,style="text-align: end;margin-top: 10px",
+                                       actionButton(inputId = ns("confirm_changes_btn"),
+                                                    label = "Apply Changes"))))))
+  )
+}
+
+
+summarise_ops_server <- function(id,dataset,counter_ui) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+      ops_id <- as.numeric(strsplit(id,split = "_")[[1]][3])
+      ops_name <- strsplit(id,split = "_")[[1]][2]
+      rv_return <- reactiveValues()
+      rv_return$details <- list(data = as.data.frame(dataset),
+                                operation_id = ops_id,
+                                operation_name = ops_name,
+                                cnf_btn_count = as.numeric(0),
+                                remove_btn_count = as.numeric(0),
+                                ops_counter_ui = counter_ui)
+      
+      if(length(names(Filter(is.numeric, dataset))) == 0) {
+        showModal(modalDialog(
+          title = "No Numeric Column Found!",
+          HTML(paste0("Selected data contains non numeric columns. Please first select numeric columns(s) in the dataset or upload the dataset which should have numeric column(s) and then perform ",
+                      tags$div(style = "font-weight:600;font-size:14px;display:contents;","Summarise")," operation.")),
+          easyClose = FALSE,
+          footer = modalButton("Dismiss")
+        ))
+      }
+      
+      #observe event of confirm changes button
+      observeEvent(input$confirm_changes_btn,ignoreInit = TRUE,{
+        error_value <- "Initiated"
+        rv_return$summary_data <- dataset
+        error_value <- tryCatch({
+          dplyr_expr <- expr({
+            rv_return$summary_data <- rv_return$summary_data %>% summarise_at(vars(input$summary_col_name),
+                                                          lapply(setNames(input$summary_measure_name, input$summary_measure_name), 
+                                                                 function(nameindex) {nameindex}))
+          })
+          # save script
+          # expression_string <- capture.output(dplyr_expr)
+          # script_text <- paste0(
+          #   expression_string[2:(length(expression_string)-1)],collapse = "<br>"
+          # )
+          # evaluate expression
+          eval(dplyr_expr)
+          paste0("Successfully Executed")
+        },warning = function(w){
+          return(w)
+        },error = function(e){
+          return(e)
+        })
+        
+        if(grepl("Successfully Executed",error_value,ignore.case = TRUE )){
+          if(ncol(rv_return$summary_data) == 0){
+            rv_return$summary_data <- dataset
+          }
+          rv_return$details <- list(data = as.data.frame(rv_return$summary_data),
+                                    operation_id = ops_id,
+                                    operation_name = ops_name,
+                                    cnf_btn_count = as.numeric(input[["confirm_changes_btn"]]),
+                                    remove_btn_count = as.numeric(input[["remove_step"]]),
+                                    ops_counter_ui = counter_ui)
+        }else if(grepl("error",error_value,ignore.case = TRUE )){
+          showModal(modalDialog(title = "Error",error_value,fade = TRUE))
+        }else if(grepl("warning",error_value,ignore.case = TRUE )){
+          showModal(modalDialog(title = "Warning",error_value,fade = TRUE))
+        }else{
+          print(error_value)
+        }
+      })
+      
+      #observer event of close button
+      observeEvent(input$remove_step,ignoreInit = TRUE,{
+        rv_return$details <- list(data = as.data.frame(dataset),
+                                  operation_id = ops_id,
+                                  operation_name = ops_name,
+                                  cnf_btn_count = as.numeric(input[["confirm_changes_btn"]]),
+                                  remove_btn_count = as.numeric(input[["remove_step"]]),
+                                  ops_counter_ui = counter_ui)
+      })
+      
+      return(reactive(rv_return$details))
+      
+    }
+  )
+}
+
+
+summarise_ops_remove_UI <- function(id) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+      ns <- session$ns
+      removeUI(selector = paste0("#",ns("DM_ops_main_div")),
+               immediate = TRUE)
+    })
+}

@@ -1,0 +1,103 @@
+---
+title: " "
+output: word_document
+
+params:
+  p1: NA
+  p2: NA
+  p3: NA
+  p4: NA
+---
+
+# DATA FILTER REPORT (`r params$p4`):
+
+**Report rendered on `r format(x = now(),format = "%A, %B %d, %Y %H:%M:%S UTC",tz = "UTC")`**
+
+## Uploaded Data  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+uploaded_dataset <- data.frame(params$p2)
+no_row_uploaded <- nrow(uploaded_dataset)
+no_col_uploaded <- ncol(uploaded_dataset)
+#if(no_col <8){v <- no_col} else{ v<- 8}
+```
+
+The **Uploaded Data** has the `r no_row_uploaded` row(s) and `r no_col_uploaded` column(s).
+
+## Filtered Data
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+library(stringi)
+list_params <- params$p1
+len_list_params <- length(list_params)
+ df_numeric <- NULL
+ df_character <- NULL
+ df_date <- NULL
+ df_final <- NULL
+if(len_list_params >= 1){
+  Class_var <- matrix(ncol=1, nrow=len_list_params)
+  Values <- matrix(ncol=1, nrow=len_list_params)
+  for (i in seq(len_list_params)) {
+    Class_var[i, ] <- class(list_params[[i]])
+    Values[i, ] <- paste("(",paste(list_params[[i]],collapse = ","),")")
+  }
+  class_variable<- data.frame(Class_var)
+  df_final <- data.frame(Values)
+  df_final$Variable <- names(list_params)
+  df_final$Class <- class_variable
+  df_final <- df_final[ , c(2, 1, 3)] 
+  df_character <- subset(df_final, Class_var == "character")
+  df_numeric <- subset(df_final, Class_var == "integer" | Class_var == "numeric")
+  df_date <- subset(df_final, Class_var == "Date")
+  df_date$From_Date <- sub(",.*", "", df_date$Values)
+  df_date$From_Date <- substr(df_date$From_Date, 2, nchar(df_date$From_Date))
+  df_date$To_Date <- sub(".*,", "",df_date$Values)
+  df_date$To_Date <- substr(df_date$To_Date, 1, nchar(df_date$From_Date))
+  df_date <- data.frame(df_date$Variable,df_date$From_Date,df_date$To_Date,df_date$Class)
+  colnames(df_date) <- c("Variable","From Date","To Date","Class")
+  }
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+filtered_data <- data.frame(params$p3)
+no_row_filtered <- nrow(filtered_data)
+no_col_filtered <- ncol(filtered_data)
+#if(no_col_a < 8){v1 <- no_col_a} else{ v1 <- 8}
+```
+
+The **Filtered Data** section has `r no_row_filtered` row(s) and `r no_col_filtered` column(s).
+
+## Summary
+
+**Comparison of uploaded and filtered data:**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+overall_summary <- data.frame("Data" = c("Uploaded Data","Filtered Data"),
+                        "No. of Rows" = c(no_row_uploaded,no_row_filtered),
+                        "No. of Columns" = c(no_col_uploaded,no_col_filtered),
+                        check.names = FALSE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+knitr::kable(overall_summary)
+```
+
+**Variables used for filtration :**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+if(isFALSE(is.null(df_final))){
+ df_final$Variable
+} else {
+  print("No variable selected in filter")
+}
+```
+
+**Values/Ranges of variables used for filtration:**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment= ""}
+if(isFALSE(is.null(df_final))){
+knitr::kable(df_final)
+} else {
+  print("No variable selected in filter")
+}
+```

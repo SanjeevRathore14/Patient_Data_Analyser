@@ -1,0 +1,85 @@
+# Define UI for application that draws a histogram
+fluidPage(
+  # Application title
+  fluidRow(
+    style = "background-color: darkblue;
+    color: white;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    padding: 0rem 0rem 1rem 1rem;",
+  titlePanel("Patient Data Analyser")),
+  tabsetPanel(id = "tabs",
+              tabPanel(title = "Demographic",
+                       DataPreviewUI("demographic_data_preview"),
+                       fluidRow(
+                         style = "margin-top:1rem;",
+                         column(width = 3,
+                              shinyWidgets::actionBttn(
+                                  inputId = "demographic_show_visuals_btn",
+                                  label = "Show Visuals",
+                                  style = "unite", 
+                                  color = "primary",
+                                  size = "sm",
+                                  icon = icon("chart-line")
+                                )),
+                         column(width = 9)),
+                       fluidRow(
+                         style = "margin-top:2rem;",
+                         column(width = 12,
+                              shinyWidgets::radioGroupButtons(
+                                  inputId = "demographic_dim_toggle",
+                                  label = "Grouping Variables",
+                                  choices = c("SEX","RACE","ETHNIC"),
+                                  selected = "SEX",
+                                  status = "primary",
+                                  checkIcon = list(
+                                    yes = icon("ok", 
+                                               lib = "glyphicon"),
+                                    no = icon("remove",
+                                              lib = "glyphicon"))))),
+                       fluidRow(
+                         column(width = 6,
+                                shinycssloaders::withSpinner(plotOutput("patient_distribution_bar"),type = 8)),
+                         column(width = 6,
+                                shinycssloaders::withSpinner(plotOutput("age_distribution_boxplot"),type = 8))),
+                       fluidRow(
+                         column(width = 6,
+                              shinycssloaders::withSpinner(plotOutput("treatment_dur_hist"),type = 8)))),
+              tabPanel(title = "Adverse Event",
+                       DataPreviewUI("adverse_event_data_preview"),
+                       fluidRow(
+                         style = "margin-top:1rem;",
+                         column(width = 3,
+                                shinyWidgets::actionBttn(
+                                  inputId = "Adv_event_show_visuals_btn",
+                                  label = "Show Visuals",
+                                  style = "unite", 
+                                  color = "primary",
+                                  size = "sm",
+                                  icon = icon("chart-line")
+                                )),
+                         column(width = 9)),
+                       fluidRow(
+                         style = "margin-top:2rem;",
+                         column(width = 12,
+                                shinyWidgets::radioGroupButtons(
+                                  inputId = "demographic_dim_toggle",
+                                  label = "Grouping Variables",
+                                  choices = c("SEX","RACE","ETHNIC"),
+                                  selected = "SEX",
+                                  status = "primary",
+                                  checkIcon = list(
+                                    yes = icon("ok", 
+                                               lib = "glyphicon"),
+                                    no = icon("remove",
+                                              lib = "glyphicon"))))),
+                       fluidRow(
+                         column(width = 6,
+                                shinycssloaders::withSpinner(plotOutput("adv_evt_severity_heatmap"),type = 8)),
+                         column(width = 6,
+                                shinycssloaders::withSpinner(plotOutput("age_distribution_boxplot"),type = 8))),
+                       fluidRow(
+                         column(width = 6,
+                                shinycssloaders::withSpinner(plotOutput("treatment_dur_hist"),type = 8)))))
+  
+)

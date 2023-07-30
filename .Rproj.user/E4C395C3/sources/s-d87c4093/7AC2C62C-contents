@@ -1,0 +1,6 @@
+server <- function(input, output) {
+  
+  DataPreviewServer("data_preview_demographic",dataset = demographic_dataset)
+  DataPreviewServer("data_preview_adverse_event",dataset = adverse_event_dataset)
+  
+}

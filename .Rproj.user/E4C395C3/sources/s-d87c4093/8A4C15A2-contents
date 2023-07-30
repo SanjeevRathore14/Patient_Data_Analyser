@@ -1,0 +1,4 @@
+tabPanel(
+  title = "Session Info",
+  value = "session_info_tab",
+  verbatimTextOutput("Session_log"))

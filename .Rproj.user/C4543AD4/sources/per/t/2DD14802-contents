@@ -1,0 +1,43 @@
+#####################################Module to show the preview of the dataset#####################################
+#UI function
+DataPreviewUI <- function(id, dataset) {
+  tagList(
+    fluidRow(h3("Data Preview"),
+             column(width = 6,
+                    shinyWidgets::pickerInput(inputId = ns("user_sub_id"),
+                                              choices = order(unique(dataset[["USUBJID"]])),
+                                              multiple = TRUE,
+                                              selected = NULL,
+                                              label = "Select User Subject ID",
+                                              width = "100%",
+                                              options = list('actions-box' = TRUE,`live-search` = TRUE,
+                                                             'none-selected-text' = "None selected"))),
+             column(width = 6)),
+    fluidRow(
+      column(width = 12,
+             shinycssloaders::withSpinner(reactable::reactableOutput(ns("data_preview_table")),
+                                          type = 8)))
+  )
+}
+
+#Server function
+DataPreviewServer <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    
+    #defining the reactive values object
+    rv_getdataset <- reactiveValues()
+    
+    #observe event to capture the change in the dataset input
+    observeEvent(input$dataset,ignoreNULL = TRUE,{
+      #loading the selected dataset from datasets package and storing it into rv_getdataset
+      rv_getdataset$dataset <- as.data.frame(get(input$dataset, "package:datasets"))
+      #storing the name of the slected dataset into rv_getdataset
+      rv_getdataset$name <- as.character(input$dataset)
+    })
+    #returning the name and actual dataset
+    return(reactive(rv_getdataset))
+  })
+}
+
+
+

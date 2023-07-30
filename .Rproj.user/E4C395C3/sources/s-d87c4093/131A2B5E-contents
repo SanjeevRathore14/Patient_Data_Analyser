@@ -1,0 +1,20 @@
+---
+title: "Demographic Data Visualizaton Report"
+output: github_document
+editor_options: 
+chunk_output_type: console
+---
+**Report rendered on `r format(x = Sys.time(),format = "%A, %B %d, %Y %H:%M:%S UTC",tz = "UTC")`**
+
+# Overview
+
+**Data Designer** start with the ***Upload Data*** tab to load dataset into the application by using various file systems. It allows to load more than one dataset. Each dataset has five tabs to performer different operations like `Data View`, `Data Filter`, `Data Insights`, `Analysis` and `Final Data`. The very next tab just after Upload Data is ***Merge Data*** which is used to join two datasets by using one or more joining key. It also allows to remove duplicate records from join dataset by using the one or multiple variables. After Merge Data, ***Data Manipulation*** tab come into the picture and used to perform the various operations with regards to data manipulation like `select`, `filter`, `mutate`, `rename`, `group`, `summarise` and data reshaping from `long to wide` and `wide to long`. At the end, all the datasets can be downloaded  from ***Download Data*** tab which user saved at Uploaded Data, Merge Data and Data Manipulation tabs in different file systems.
+
+## Plot 1
+![](./graphs/patient_distribution.png)
+
+## Plot 2
+![](./graphs/age_distribution.png)
+
+## Plot 3
+![](./graphs/age_group_ratio.png)

@@ -1,0 +1,35 @@
+library(shiny)
+library(shinyWidgets)
+library(shinycssloaders)
+library(reactable)
+library(dplyr)
+
+
+
+# adding project specific folders
+if(dir.exists("R")) addResourcePath(prefix = "R", directoryPath = "R")
+if(dir.exists("data")) addResourcePath(prefix = "data", directoryPath = "data")
+if(dir.exists("components")) addResourcePath(prefix = "components", directoryPath = "components")
+
+#loading demographic dataset
+demographic_dataset <- readRDS(file = "data/demographic_dataset.rds")
+#calculating treatment start flag in demographic dataset
+temp <- demographic_dataset %>% 
+  mutate(TREATMENTSTARTFLAG = if_else(is.na(TREATMENTSTARTDATE) & is.na(TREATMENTENDDATE),as.logical(FALSE),as.logical(TRUE)),
+         TREATMENTDURWEEKS = if_else(TREATMENTSTARTFLAG == FALSE,as.numeric(NA),
+                                     if_else(is.na(TREATMENTENDDATE),as.numeric(round(difftime(time1 = Sys.Date(),
+                                                                                         time2 = TREATMENTSTARTDATE,
+                                                                                         units = "weeks"),2)),
+                                             as.numeric(round(difftime(time1 = TREATMENTENDDATE,
+                                                                 time2 = TREATMENTSTARTDATE,
+                                                                 units = "weeks"),2)))))
+
+
+#loading Adverse Event dataset
+adverse_event_dataset <- readRDS(file = "data/adverse_event_dataset.rds")
+
+
+
+#sourcing modules
+source(file.path("R","data_preview_module.R"))
+

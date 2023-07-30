@@ -1,0 +1,20 @@
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  # Application title
+  titlePanel("Patient Data Analyser"),
+  tabsetPanel(id = "tabs",
+              tabPanel(title = "Demographic",
+                       fluidRow(h3("Data Preview"),
+                                   column(width = 6,
+                                       shinyWidgets::pickerInput(inputId = "user_sub_id",
+                                                                 choices = order(unique(demographic_dataset[["USUBJID"]])),
+                                                                 multiple = TRUE,
+                                                                 selected = NULL,
+                                                                 label = "Select User Subject ID",
+                                                                 width = "100%",
+                                                                 options = list('actions-box' = TRUE,`live-search` = TRUE,
+                                                                                'none-selected-text' = "None selected"))),
+                                column(width = 6)),
+                       fluidPage()))
+  
+)

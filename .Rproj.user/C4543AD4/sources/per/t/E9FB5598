@@ -1,0 +1,26 @@
+{
+    "id": "E9FB5598",
+    "path": "~/poc_app/Patient_Data_Analyser/global.R",
+    "project_path": "global.R",
+    "type": "r_source",
+    "hash": "2570351011",
+    "contents": "",
+    "dirty": false,
+    "created": 1690378587830.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "8,21",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1690381885,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1690381885348,
+    "read_only": false,
+    "read_only_alternatives": []
+}

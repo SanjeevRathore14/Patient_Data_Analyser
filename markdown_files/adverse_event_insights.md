@@ -1,0 +1,13 @@
+
+### Insights from adverse events visuals
+
+  - **Age Distribution Based On Life Threatening Event Flag:** Life
+    threatening events are higher for *\~ 80 to 90 years of patients*.
+
+  - **Top Five Severe Adverse Events:** `SYNCOPE`, `APPLICATION SITE
+    ERYTHEMA`, `APPLICATION SITE IRRITATION`, `HIP FRACTURE and BLISTER`
+    are the *top five SEVERE adverse events*.
+
+  - **Moderate and Severe Adverse Event Ratio By Sex:** `MODERATE` and
+    `SEVERE` adverse events are higher in female with respect to male by
+    *11%* & *3%* respectively.

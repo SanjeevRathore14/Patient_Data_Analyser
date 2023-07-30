@@ -1,0 +1,19 @@
+---
+title: "Adverse Events Data Visualizaton Report"
+output: word_document
+editor_options: 
+chunk_output_type: console
+---
+**Report rendered on `r format(x = Sys.time(),format = "%A, %B %d, %Y %H:%M:%S IST",tz = "Asia/Kolkata")`**
+
+```{r child = 'adverse_event_insights.Rmd'}
+```
+
+## Plot 1
+![](./graphs/age_distribution_flag.png)
+
+## Plot 2
+![](./graphs/top5_adv_events.png)
+
+## Plot 3
+![](./graphs/adv_events_ratio.png)

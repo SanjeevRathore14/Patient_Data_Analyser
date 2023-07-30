@@ -1,0 +1,58 @@
+tabPanel(title = "Demographic",
+         #calling the UI function of data preview module to show the demographic data
+         DataPreviewUI("demographic_data_preview"),
+         fluidRow(
+           style = "margin-top:1rem;",
+           column(width = 6,
+                  #switch button to show/hide the visuals
+                  shinyWidgets::materialSwitch(
+                    inputId = "demographic_show_visuals_togg",
+                    label = tags$div("Show Visuals",
+                                     style = "font-size:16px;font-weight:600;"), 
+                    value = FALSE,
+                    inline = TRUE,
+                    status = "primary",
+                  )),
+           column(width = 6)),
+         #div for entire visual section
+         shinyjs::hidden(tags$div(id = "demographic_dta_visuals_div",
+                                  fluidRow(
+                                    style = "margin-top:1rem;",
+                                    column(width = 6,tags$div(style = "display: flex;align-items: baseline;",
+                                                              h3("Data Visualization"),
+                                                              #download button for demographic visualization report
+                                                              shinyjs::hidden(downloadButton(outputId = "demographic_report_download",
+                                                                                             label =   "Download Report",
+                                                                                             class = "custom-btn-color",
+                                                                                             style = "margin-left: 1rem;background-color:#3b5998;color: white;")))),
+                                    column(width = 6,
+                                           style = "text-align:right;",
+                                           #group radio button for grouping variables (SEX,RACE and ETHNIC)
+                                           shinyWidgets::radioGroupButtons(
+                                             inputId = "demographic_dim_toggle",
+                                             label = "Grouping Variables",
+                                             choices = c("SEX","RACE","ETHNIC"),
+                                             selected = "SEX",
+                                             status = "primary",
+                                             checkIcon = list(
+                                               yes = icon("ok", 
+                                                          lib = "glyphicon"),
+                                               no = icon("remove",
+                                                         lib = "glyphicon"))))),
+                                  fluidRow(
+                                    style = "margin-top:1.5rem;",
+                                    column(width = 6,
+                                           #plotoutput to generate the patient distribution bar plot for demographic data
+                                           shinycssloaders::withSpinner(plotOutput("patient_distribution_bar"),type = 8)),
+                                    column(width = 6,
+                                           #plotoutput to generate the age distribution box plot for demographic data
+                                           shinycssloaders::withSpinner(plotOutput("age_distribution_boxplot"),type = 8))),
+                                  fluidRow(
+                                    style = "margin-top:2.5rem;margin-bottom: 2.2rem;",
+                                    column(width = 6,
+                                           #plotoutput to generate the age groups ratio bar plot for demographic data
+                                           shinycssloaders::withSpinner(plotOutput("age_groups_ratio_barplot"),type = 8)),
+                                    column(width = 6,
+                                           #uioutput to show the insights for demographic data
+                                           shinycssloaders::withSpinner(uiOutput("demographic_insights_ui"),type = 8)))))
+),

@@ -1,0 +1,64 @@
+# Define UI for application that draws a histogram
+fluidPage(
+  # Application title
+  fluidRow(
+    style = "background-color: darkblue;
+    color: white;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    padding: 0rem 0rem 1rem 1rem;",
+  titlePanel("Patient Data Analyser")),
+  tabsetPanel(id = "tabs",
+              tabPanel(title = "Demographic",
+                       DataPreviewUI("demographic_data_preview"),
+                       fluidRow(
+                         style = "margin-top:1rem;",
+                         column(width = 3,
+                              shinyWidgets::actionBttn(
+                                  inputId = "demographic_show_visuals_btn",
+                                  label = "Show Visuals",
+                                  style = "unite", 
+                                  color = "primary",
+                                  size = "sm",
+                                  icon = icon("chart-line")
+                                )),
+                         column(width = 9)),
+                       fluidRow(
+                         style = "margin-top:1rem;",
+                         column(width = 3,
+                              shinyWidgets::radioGroupButtons(
+                                  inputId = "demographic_treatment_start_flag",
+                                  label = "Treatment Start Status",
+                                  choices = c("Yes","No","All"),
+                                  status = "primary",
+                                  checkIcon = list(
+                                    yes = icon("ok", 
+                                               lib = "glyphicon"),
+                                    no = icon("remove",
+                                              lib = "glyphicon")))),
+                         column(width = 3,
+                                shinyWidgets::pickerInput(inputId = ns("demographic_ethnic"),
+                                                          choices = c("All",sort(unique(demographic_dataset[["ETHNIC"]]))),
+                                                          multiple = FALSE,
+                                                          selected = "All",
+                                                          label = "Select Ethnic",
+                                                          width = "100%",
+                                                          options = list('actions-box' = TRUE,`live-search` = TRUE,
+                                                                         'none-selected-text' = "None selected"))),
+                         column(width = 6))),
+              tabPanel(title = "Adverse Event",
+                       DataPreviewUI("data_preview_adverse_event"),
+                       fluidRow(
+                         style = "margin-top:1rem;",
+                         column(width = 3,
+                                shinyWidgets::actionBttn(
+                                  inputId = "show_visuals_Adve_btn",
+                                  label = "Show Visuals",
+                                  style = "unite", 
+                                  color = "primary",
+                                  size = "sm",
+                                  icon = icon("chart-line")
+                                )),
+                         column(width = 9))))
+  
+)

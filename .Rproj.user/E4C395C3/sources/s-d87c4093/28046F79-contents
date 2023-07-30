@@ -1,0 +1,368 @@
+
+### Generate Ui Function ----
+UI_Generator <- function(column_name, input_id, na_input_id, label) {
+  
+  if (is.numeric(column_name)) {
+    # cature the range of column for slider input.
+    ranges <- range(column_name, na.rm = TRUE)
+    
+    fluidRow(style = "padding: 1% 4% 1% 4%;", 
+             fluidRow(style = "padding-bottom: 2%;",
+                      column(8,style = "text-overflow: ellipsis;overflow: hidden;",
+                             tags$b(label)),
+                      column(4,style = "text-align: end;",
+                             tags$b(paste0("NA's : ",sum(is.na(column_name)))))),
+             fluidRow(column(12,style = "text-align: end;",
+                             # Ui for option to remove null values
+                             if(any(is.na(column_name))){
+                               shinyWidgets::switchInput(inputId = na_input_id, 
+                                                         label = "", 
+                                                         onLabel = "Remove",
+                                                         offLabel = "Keep",
+                                                         value = FALSE,
+                                                         size = "mini",
+                                                         inline = TRUE)})),
+             fluidRow(column(width = 12,
+                             sliderInput(inputId = input_id,
+                                         width = '100%',
+                                         label = NULL, 
+                                         min = floor(ranges[1]),
+                                         max = ceiling(ranges[2]),
+                                         value = c(floor(ranges[1]),ceiling(ranges[2])))))
+    )
+    
+  } else if (is.factor(column_name)) {
+    
+    level <- sort(levels(column_name))
+    fluidRow(style = "padding: 1% 4% 1% 4%;", 
+             fluidRow(style = "padding-bottom: 2%;",
+                      column(8,style = "text-overflow: ellipsis;overflow: hidden;",
+                             tags$b(label)),
+                      column(4,style = "text-align: end;",
+                             tags$b(paste0("NA's : ",sum(is.na(column_name)))))),
+             fluidRow(column(12,style = "text-align: end;",
+                             # Ui for option to remove null values
+                             if(any(is.na(column_name))){
+                               shinyWidgets::switchInput(inputId = na_input_id, 
+                                                         label = "", 
+                                                         onLabel = "Remove",
+                                                         offLabel = "Keep",
+                                                         value = FALSE,
+                                                         size = "mini",
+                                                         inline = TRUE)})),
+             # Ui for slider input
+             fluidRow(column(width = 12,
+                             pickerInput(inputId = input_id,
+                                         label = NULL,
+                                         width = '100%',
+                                         choices = level,
+                                         multiple = TRUE,
+                                         selected = level,
+                                         options = list('actions-box' = TRUE,
+                                                        `live-search` = TRUE,
+                                                        'none-selected-text' = "None selected"))))
+    )
+    
+  } else if (is.character(column_name))  {
+    
+    level <- sort(unique(column_name))
+    fluidRow(style = "padding: 1% 4% 1% 4%;", 
+             fluidRow(style = "padding-bottom: 2%;",
+                      column(8,style = "text-overflow: ellipsis;overflow: hidden;",
+                             tags$b(label)),
+                      column(4,style = "text-align: end;",
+                             tags$b(paste0("NA's : ",sum(is.na(column_name)))))),
+             fluidRow(column(12,style = "text-align: end;",
+                             # Ui for option to remove null values
+                             if(any(is.na(column_name))){
+                               shinyWidgets::switchInput(inputId = na_input_id, 
+                                                         label = "", 
+                                                         onLabel = "Remove",
+                                                         offLabel = "Keep",
+                                                         value = FALSE,
+                                                         size = "mini",
+                                                         inline = TRUE)})),
+             # Ui for slider input
+             fluidRow(column(width = 12,
+                             pickerInput(inputId = input_id,
+                                         label = NULL,
+                                         width = '100%',
+                                         choices = level,
+                                         multiple = TRUE,
+                                         selected = level,
+                                         options = list('actions-box' = TRUE,
+                                                        `live-search` = TRUE,
+                                                        'none-selected-text' = "None selected"))))
+    )
+  } else if (is.character(column_name))  {
+    
+    level <- sort(unique(column_name))
+    fluidRow(style = "padding: 1% 4% 1% 4%;", 
+             fluidRow(style = "padding-bottom: 2%;",
+                      column(8,style = "text-overflow: ellipsis;overflow: hidden;",
+                             tags$b(label)),
+                      column(4,style = "text-align: end;",
+                             tags$b(paste0("NA's : ",sum(is.na(column_name)))))),
+             fluidRow(column(12,style = "text-align: end;",
+                             # Ui for option to remove null values
+                             if(any(is.na(column_name))){
+                               shinyWidgets::switchInput(inputId = na_input_id, 
+                                                         label = "", 
+                                                         onLabel = "Remove",
+                                                         offLabel = "Keep",
+                                                         value = FALSE,
+                                                         size = "mini",
+                                                         inline = TRUE)})),
+             # Ui for slider input
+             fluidRow(column(width = 12,
+                             pickerInput(inputId = input_id,
+                                         label = NULL,
+                                         width = '100%',
+                                         choices = level,
+                                         multiple = TRUE,
+                                         selected = level,
+                                         options = list('actions-box' = TRUE,
+                                                        `live-search` = TRUE,
+                                                        'none-selected-text' = "None selected"))))
+    )
+    
+  } else if (is.Date(column_name)) {
+    
+    ranges <- range(column_name,na.rm = TRUE)
+    
+    fluidRow(style = "padding: 1% 4% 1% 4%;", 
+             fluidRow(style = "padding-bottom: 2%;",
+                      column(8,style = "text-overflow: ellipsis;overflow: hidden;",
+                             tags$b(label)),
+                      column(4,style = "text-align: end;",
+                             tags$b(paste0("NA's : ",sum(is.na(column_name)))))),
+             fluidRow(column(12,style = "text-align: end;",
+                             # Ui for option to remove null values
+                             if(any(is.na(column_name))){
+                               shinyWidgets::switchInput(inputId = na_input_id, 
+                                                         label = "", 
+                                                         onLabel = "Remove",
+                                                         offLabel = "Keep",
+                                                         value = FALSE,
+                                                         size = "mini",
+                                                         inline = TRUE)})),
+             # Ui for slider input
+             fluidRow(column(width = 12,
+                             shiny::dateRangeInput(inputId = input_id,
+                                                   label = NULL,
+                                                   width = '100%', 
+                                                   min = ranges[1], 
+                                                   max = ranges[2], 
+                                                   start = ranges[1],
+                                                   end = ranges[2])))
+    )
+  } else  {
+    # Not supported
+    NULL
+  }
+}
+
+
+### Filter apply function ----
+data_filter <- function(column_value, input_value, na_col) {
+  final_filter <- NULL
+  if (is.numeric(column_value)) {
+    if(isFALSE(is.null(na_col))){
+      if(na_col == "FALSE"){
+        final_filter <- is.na(column_value) | column_value >= input_value[1] & column_value <= input_value[2]
+      } else {
+        final_filter <- !is.na(column_value) & column_value >= input_value[1] & column_value <= input_value[2]
+      }
+    } else {
+      final_filter <- column_value >= input_value[1] & column_value <= input_value[2]
+    }
+  } else if (is.factor(column_value)) {
+    if(isFALSE(is.null(input_value))){
+      if(isFALSE(is.null(na_col))){
+        if(na_col == "FALSE"){
+          final_filter <- is.na(column_value) | column_value %in% input_value
+        } else {
+          final_filter <- column_value %in% input_value
+        }
+      } else {
+        final_filter <- column_value %in% input_value
+      }
+    }  else {
+      if(isFALSE(is.null(na_col))){
+        if(na_col == "FALSE"){
+          final_filter <- is.na(column_value) | column_value %in% unique(column_value)
+        } else {
+          final_filter <- column_value %in% unique(column_value)
+        }
+      } else {
+        final_filter <- column_value %in% unique(column_value)
+      }
+    } 
+  }else if (is.Date(column_value)) {
+    if(isFALSE(is.null(na_col))){
+      if(na_col == "FALSE"){
+        final_filter <- is.na(column_value) | column_value >= input_value[1] & column_value <= input_value[2]
+        
+      } else {
+        final_filter <- !is.na(column_value) & column_value >= input_value[1] & column_value <= input_value[2]
+      }
+    }  else {
+      final_filter <- column_value >= input_value[1] & column_value <= input_value[2]
+    }
+  } else if (is.character(column_value)) {
+    if(isFALSE(is.null(input_value))){
+      if(isFALSE(is.null(na_col))){
+        if(na_col == "FALSE"){
+          final_filter <- is.na(column_value) | column_value %in% input_value
+        } else {
+          final_filter <- column_value %in% input_value
+        }
+      } else {
+        final_filter <- column_value %in% input_value
+      }
+    }  else {
+      if(isFALSE(is.null(na_col))){
+        if(na_col == "FALSE"){
+          final_filter <- is.na(column_value) | column_value %in% unique(column_value)
+        } else {
+          final_filter <- column_value %in% unique(column_value)
+        }
+      } else {
+        final_filter <- column_value %in% unique(column_value)
+      }
+    } 
+  } else {
+    # No control, so don't filter
+    final_filter <- rep(TRUE,length(column_value))
+  }
+  
+  return(final_filter)
+}
+
+#### Module UI ----
+DataFilterUI <- function(id){
+  ns <- NS(id)
+  tagList(useShinyjs(),
+          tags$div(class = "column_selector_with_report_div",
+                   h3("Column Selection"),
+                   shinyjs::hidden(downloadButton(outputId = ns("report"),
+                                                  label =   "Report",
+                                                  class = "custom-btn-color"))),
+          uiOutput(ns('data_selector_ui')),
+          # tags$div(id="filter_col_selection_spinner",
+          uiOutput(ns('data_filter_ui'))
+  )
+}
+
+
+### Module Server ----
+DataFilterServer <- function(id, dataset,dataset_name){
+  moduleServer(
+    id,
+    function(input,output,session){
+      ns <- session$ns
+      
+      # #Show report button when data filter module is called if DONNAGER_DEPLOYMENT_FLAG is TRUE
+      #   if(isTRUE(getOption("DONNAGER_DEPLOYMENT_FLAG"))){
+      #     shinyjs::show("report")
+      #   }
+      shinyjs::show("report")
+      
+      output$data_selector_ui <- renderUI({
+        tagList( tags$style(type='text/css', ".dropdown-menu {max-height: 250px; }"),
+        fluidRow(style = "padding-left: 3%; padding-right: 3%;",
+                 pickerInput(inputId = ns("select_variable"),width = "100%", label = "Select Variables", selected = names(dataset), 
+                             choices = names(dataset), multiple = TRUE,
+                             options = list('actions-box' = TRUE,'live-search' = TRUE,
+                                            'none-selected-text' = "None selected"))))
+      })
+      
+      
+      attribute_selector <- reactive({
+        if(isFALSE(is.null(input[["select_variable"]]))){
+          if(all(input[["select_variable"]] %in% names(dataset))){
+            dataset[input[["select_variable"]]]
+          }
+        }
+        
+      })
+      
+      output$data_filter_ui <- renderUI({
+        lapply(seq_along(1:length(names(attribute_selector()))), function(layer_no){
+          UI_Generator(column_name = attribute_selector()[[layer_no]],
+                       input_id = ns(names(attribute_selector())[layer_no]),
+                       na_input_id = ns(paste0("na_",names(attribute_selector())[layer_no])),
+                       label = tags$b(names(attribute_selector())[layer_no]))
+        })
+      })
+      
+      selected <- reactive({
+        if(length(names(attribute_selector())) > 0){
+          each_var <- map(names(attribute_selector()),
+                          ~ data_filter(attribute_selector()[[.x]],(input[[.x]]),(input[[paste0("na_",.x)]])))
+          reduce(each_var, `&`)
+        }
+      })
+      
+      uploaded_data <- dataset
+      
+      selected_variables <- reactive({
+        x <- list()
+        x<-lapply(unique(input$select_variable),function(i){i <- input[[i]]})
+        names(x) <- input$select_variable
+        x
+      })
+      filtered_data <- reactive({
+        if (is.null(selected())) {
+          dataset
+        } else if (length(input[["select_variable"]]) == 1) {
+          dataset <- data.frame(dataset[selected(), c(input[["select_variable"]])])
+          colnames(dataset) <- input[["select_variable"]]
+          dataset
+        } else {
+          dataset[selected(), c(input[["select_variable"]])]
+        }
+      })
+      
+      output$report <- downloadHandler(
+        # For PDF output, change this to ".pdf"
+        filename = paste0("Data_Filter_Selection_",Sys.Date(),".docx"),
+        content = function(file) {
+          # Copy the report file to a temporary directory before processing it, in
+          # case we don't have write permissions to the current working dir (which
+          # can happen when deployed).
+          tempReport <- file.path("components", "datafilter_report.Rmd", fsep="/")
+          file.copy("datafilter_report.Rmd", tempReport, overwrite = TRUE)
+          # Set up parameters to pass to Rmd document
+          
+          params <- list(p1 = selected_variables(),p2 = uploaded_data,p3 = filtered_data(),p4 = str_to_upper(dataset_name))
+          #browser()
+          # Knit the document, passing in the `params` list, and eval it in a
+          # child of the global environment (this isolates the code in the document
+          # from the code in this app).
+          rmarkdown::render(tempReport, output_file = file,
+                            params = params,
+                            envir = new.env(parent = globalenv())
+          )
+        }
+      )
+      
+      return(
+        reactive({
+          if (is.null(selected())) {
+            dataset
+          }
+          else if (length(input[["select_variable"]]) == 1) {
+            dataset <- data.frame(dataset[selected(), c(input[["select_variable"]])])
+            colnames(dataset) <- input[["select_variable"]]
+            dataset
+          } else {
+            dataset[selected(), c(input[["select_variable"]])]
+          }
+          
+          
+          
+        })
+      )
+    })
+}

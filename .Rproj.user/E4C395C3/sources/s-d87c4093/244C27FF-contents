@@ -1,0 +1,30 @@
+
+p <-ggplot(plot_data, mapping = aes(x = reorder(ADVERSEEVENTTERM,FREQUENCY), y = FREQUENCY, fill = factor(FREQUENCY,levels = c("4","3","2")))) +
+  geom_bar(stat = "identity") + 
+  geom_text(mapping = aes(label = FREQUENCY),vjust = 0.3 , hjust = -0.2,  size = 3) + 
+  coord_flip() + 
+  guides(fill=guide_legend(title= paste0("FREQUENCY"))) +
+  scale_fill_manual(values= c("#3b5998","#8b9dc3","#dfe3ee")) +
+  labs(title = "Top Five Severe Adverse Events",x = "ADVERSE EVENT") +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, color = "black", face = "plain"),
+        legend.position = "bottom",
+        plot.background = element_rect(colour = "#8b9dc3", fill=NA, size=1,linetype = "dotted"),
+        plot.margin = unit(c(1,1,1,1), "cm"))
+
+
+dist_p <- ggplot(plot_data, aes(x = reorder(.data[[input$demographic_dim_toggle]],desc(FREQUENCY)),
+                                y = FREQUENCY,
+                                fill = reorder(.data[[input$demographic_dim_toggle]],desc(FREQUENCY)))) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = FREQUENCY),vjust = -0.5, colour = "black",size = 5) +
+  scale_fill_manual(values = c("#3b5998","#8b9dc3","#dfe3ee","#f7f7f7")) +
+  labs(title = "Patient Distribution", x = input$demographic_dim_toggle, y = "NUMBER OF PATIENTS") +
+  guides(fill=guide_legend(title= paste0(input$demographic_dim_toggle))) +
+  ylim(0,350) +
+  ggplot2::theme_light() +
+  theme(plot.title = element_text(hjust = 0.5, size = 14, color = "black", face = "plain"),
+        legend.position = "bottom",
+        plot.background = element_rect(colour = "#8b9dc3", fill=NA, size=1,linetype = "dotted"),
+        plot.margin = unit(c(1,1,1,1), "cm"))
+dist_p

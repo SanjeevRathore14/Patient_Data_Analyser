@@ -1,0 +1,82 @@
+group_ops_UI <- function(id,field_names = NULL,counter_ui){
+  ns <- NS(id)
+  insertUI(
+    selector = "#Data_Manupulation-DM_steps",
+    where = "beforeEnd",
+    immediate = TRUE,
+    ui =
+      tagList(tags$div(id = ns("DM_ops_main_div"),
+                       fluidRow(class = paste0("DM_ops_blank_row"), 
+                                tags$div(class = "DM_ops_div",paste0("Step ",counter_ui," : Group")),
+                                fluidRow(column(width = 9),
+                                         column(width = 3,tags$div(class = "close_btn_DM_div",
+                                                                   actionButton(inputId =  ns("remove_step"),
+                                                                                label = NULL,icon = icon("times"))))),
+                       fluidRow(column(12,
+                                       selectInput(inputId = ns("group_col_name"),
+                                                   label = "Select Column",
+                                                   choices = names(field_names[field_names %in% c("character","factor")]),
+                                                   selected = NULL,
+                                                   multiple = TRUE,
+                                                   width = "100%"))),
+                       fluidRow(column(12,style="text-align: end;margin-top: 10px",
+                                       actionButton(inputId = ns("confirm_changes_btn"),
+                                                    label = "Apply Changes"))))))
+  )
+}
+
+
+group_ops_server <- function(id,dataset,counter_ui) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+      ops_id <- as.numeric(strsplit(id,split = "_")[[1]][3])
+      ops_name <- strsplit(id,split = "_")[[1]][2]
+      rv_return <- reactiveValues()
+      rv_return$details <- list(data = dataset,
+                                operation_id = ops_id,
+                                operation_name = ops_name,
+                                cnf_btn_count = as.numeric(0),
+                                remove_btn_count = as.numeric(0),
+                                ops_counter_ui = counter_ui)
+      
+      #observe event of apply changes button
+      observeEvent(input$confirm_changes_btn,ignoreInit = TRUE,{
+        # req(isFALSE(input[["group_col_name"]] == ""))
+        rv_return$group_data <- dataset
+        if(isFALSE(all(input[["group_col_name"]] == ""))){
+          rv_return$group_data <- rv_return$group_data %>% group_by_at(.vars = input[["group_col_name"]])
+        }
+        rv_return$details <- list(data = rv_return$group_data,
+                                  operation_id = ops_id,
+                                  operation_name = ops_name,
+                                  cnf_btn_count = as.numeric(input[["confirm_changes_btn"]]),
+                                  remove_btn_count = as.numeric(input[["remove_step"]]),
+                                  ops_counter_ui = counter_ui)
+      })
+      
+      #observer event of close button
+      observeEvent(input$remove_step,ignoreInit = TRUE,{
+        rv_return$details <- list(data = dataset,
+                                  operation_id = ops_id,
+                                  operation_name = ops_name,
+                                  cnf_btn_count = as.numeric(input[["confirm_changes_btn"]]),
+                                  remove_btn_count = as.numeric(input[["remove_step"]]),
+                                  ops_counter_ui = counter_ui)
+      })
+      
+      return(reactive(rv_return$details))
+    }
+  )
+}
+
+
+group_ops_remove_UI <- function(id) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+      ns <- session$ns
+      removeUI(selector = paste0("#",ns("DM_ops_main_div")),
+               immediate = TRUE)
+    })
+}
